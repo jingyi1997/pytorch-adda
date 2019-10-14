@@ -31,6 +31,7 @@ def eval_tgt(encoder, classifier, data_loader):
         acc += pred_cls.eq(labels.data).cpu().sum()
 
     loss /= len(data_loader)
+    acc = acc.float()
     acc /= len(data_loader.dataset)
 
     print("Avg Loss = {}, Avg Accuracy = {:2%}".format(loss, acc))

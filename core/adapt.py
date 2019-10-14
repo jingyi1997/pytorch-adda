@@ -1,7 +1,7 @@
 """Adversarial adaptation to train target encoder."""
 
 import os
-
+import pdb
 import torch
 import torch.optim as optim
 from torch import nn
@@ -110,7 +110,7 @@ def train_tgt(src_encoder, tgt_encoder, critic,
                               loss_critic.data[0],
                               loss_tgt.data[0],
                               acc.data[0]))
-
+                
         #############################
         # 2.4 save model parameters #
         #############################
@@ -121,7 +121,6 @@ def train_tgt(src_encoder, tgt_encoder, critic,
             torch.save(tgt_encoder.state_dict(), os.path.join(
                 params.model_root,
                 "ADDA-target-encoder-{}.pt".format(epoch + 1)))
-
     torch.save(critic.state_dict(), os.path.join(
         params.model_root,
         "ADDA-critic-final.pt"))

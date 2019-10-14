@@ -2,9 +2,10 @@
 
 import torch.nn as nn
 import torch.optim as optim
-
+from torchvision.utils import save_image
 import params
 from utils import make_variable, save_model
+import pdb
 
 
 def train_src(encoder, classifier, data_loader):
@@ -33,7 +34,7 @@ def train_src(encoder, classifier, data_loader):
             # make images and labels variable
             images = make_variable(images)
             labels = make_variable(labels.squeeze_())
-
+      
             # zero gradients for optimizer
             optimizer.zero_grad()
 
@@ -57,6 +58,7 @@ def train_src(encoder, classifier, data_loader):
         # eval model on test set
         if ((epoch + 1) % params.eval_step_pre == 0):
             eval_src(encoder, classifier, data_loader)
+            pdb.set_trace()
 
         # save model parameters
         if ((epoch + 1) % params.save_step_pre == 0):
@@ -96,6 +98,7 @@ def eval_src(encoder, classifier, data_loader):
         acc += pred_cls.eq(labels.data).cpu().sum()
 
     loss /= len(data_loader)
+    acc = acc.float()
     acc /= len(data_loader.dataset)
 
     print("Avg Loss = {}, Avg Accuracy = {:2%}".format(loss, acc))

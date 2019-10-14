@@ -3,7 +3,7 @@
 
 import torch
 from torchvision import datasets, transforms
-
+from datasets.memcached_dataset import McDataset
 import params
 
 
@@ -16,10 +16,11 @@ def get_mnist(train):
                                           std=params.dataset_std)])
 
     # dataset and data loader
-    mnist_dataset = datasets.MNIST(root=params.data_root,
-                                   train=train,
-                                   transform=pre_process,
-                                   download=True)
+    if train:
+      mnist_dataset = McDataset(root_dir=params.src_dataset_root,meta_file = params.src_dataset_list,
+                                   transform=pre_process)
+    else:
+      mnist_dataset = McDataset(root_dir=params.src_dataset_eval_root,meta_file = params.src_dataset_eval_list, transform=pre_process)
 
     mnist_data_loader = torch.utils.data.DataLoader(
         dataset=mnist_dataset,
